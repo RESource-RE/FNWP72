@@ -7,7 +7,6 @@
 using FNWP72.Engine;
 using FruitNinja;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -243,10 +242,9 @@ namespace Mortar
         this.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 60.0);
         this.graphics.PreferredBackBufferWidth = 800;
         this.graphics.PreferredBackBufferHeight = 480;
-        this.graphics.IsFullScreen = true;
+        this.graphics.IsFullScreen = false;
         this.graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
         this.graphics.ApplyChanges();
-        Guide.IsScreenSaverEnabled = false;
         TheGame.fgame = new FruitGame();
         //TheGame.srtt = new SaveRingtoneTask();
         //((ChooserBase<TaskEventArgs>) TheGame.srtt).Completed += new EventHandler<TaskEventArgs>(this.srtt_Completed);
@@ -424,11 +422,8 @@ namespace Mortar
           {
             this.ERROR_BUTTON_1
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
           if (text.Length > (int) byte.MaxValue)
             text = text.Substring(0, 250);
-          Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.InitOrLoadFailedCallback), (object) null);
         }
       }
 
@@ -485,11 +480,8 @@ namespace Mortar
           {
             this.ERROR_BUTTON_1
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
           if (text.Length > (int) byte.MaxValue)
             text = text.Substring(0, 250);
-          Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.InitOrLoadFailedCallback), (object) null);
         }
       }
 
@@ -514,9 +506,6 @@ namespace Mortar
 
       protected override void Update(GameTime gameTime)
       {
-        if (this.updates > 0)
-          return;
-        ++this.updates;
         float timeSinceLastUpdate = (float) gameTime.ElapsedGameTime.Milliseconds / 1000f;
         if (!this.IsActive || !TheGame.instance.IsActive)
           return;
@@ -578,7 +567,7 @@ namespace Mortar
             {
               base.Update(gameTime);
             }
-            catch (GameUpdateRequiredException ex)
+            catch (Exception ex)
             {
               this.gameUpdateRequired = true;
               TheGame.disableNetworkCalls = true;
@@ -757,16 +746,17 @@ namespace Mortar
                   {
                     base.Update(gameTime);
                   }
-                  catch (GameUpdateRequiredException ex)
+                  catch (Exception ex)
                   {
                     this.gameUpdateRequired = true;
                   }
                 }
               }
-              catch (GameUpdateRequiredException ex)
+              catch (Exception ex)
               {
                 this.gameUpdateRequired = true;
               }
+                        /*
               catch (Exception ex)
               {
                 this.GameException();
@@ -779,11 +769,12 @@ namespace Mortar
                   this.ERROR_BUTTON_1
                 };
                 while (Guide.IsVisible)
-                  Thread.Sleep(32 /*0x20*/);
+                  Thread.Sleep(32);
                 if (text.Length > (int) byte.MaxValue)
                   text = text.Substring(0, 250);
                 Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.IngameException), (object) null);
               }
+            */
             }
           }
         }
@@ -814,24 +805,15 @@ namespace Mortar
             text = "An update is available! This update is required to connect to Xbox LIVE. Update now?";
             break;
         }
-        while (Guide.IsVisible)
-          Thread.Sleep(32 /*0x20*/);
-        Guide.BeginShowMessageBox(title, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(TheGame.GameUpdateCallback), (object) null);
       }
 
       private static void GameUpdateCallback(IAsyncResult result)
       {
         try
         {
-          int? nullable = Guide.EndShowMessageBox(result);
-          if (!nullable.HasValue || !nullable.HasValue || nullable.Value != 1)
-            return;
           if (FruitNinja.Game.isWP7TrialMode())
           {
-            if (Guide.IsVisible)
-              Thread.Sleep(128 /*0x80*/);
             TheGame.PE_ShowMarketplace();
-            Guide.ShowMarketplace(PlayerIndex.One);
           }
         }
         catch
@@ -890,7 +872,6 @@ namespace Mortar
               {
                 TheGame.setup_attribute = false;
                 TheGame.PE_SetupAttribute();
-                //TheGame.PE_SetupAttributeMGS(FruitNinja.Game.isWP7TrialMode().ToString(), (PhoneApplicationService.Current.StartupMode == 0).ToString(), TheGame.ca.GetInterfaceType(), DeviceExtendedProperties.GetValue("DeviceManufacturer").ToString(), DeviceExtendedProperties.GetValue("DeviceName").ToString(), DeviceExtendedProperties.GetValue("DeviceFirmwareVersion").ToString(), DeviceExtendedProperties.GetValue("DeviceHardwareVersion").ToString(), DeviceExtendedProperties.GetValue("DeviceTotalMemory").ToString(), CultureInfo.CurrentUICulture.Name, TimeZoneInfo.Local.BaseUtcOffset.TotalHours.ToString(), TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalHours.ToString(), "");
               }
             }
             if (TheGame.exceptionThrown)
@@ -934,11 +915,8 @@ namespace Mortar
               {
                 this.ERROR_BUTTON_1
               };
-              while (Guide.IsVisible)
-                Thread.Sleep(32 /*0x20*/);
               if (text.Length > (int) byte.MaxValue)
                 text = text.Substring(0, 250);
-              Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.IngameException), (object) null);
               return;
             }
           }
@@ -1058,11 +1036,8 @@ namespace Mortar
           {
             this.ERROR_BUTTON_1
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
           if (text.Length > (int) byte.MaxValue)
             text = text.Substring(0, 250);
-          Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.InitOrLoadFailedCallback), (object) null);
         }
       }
 
@@ -1086,11 +1061,8 @@ namespace Mortar
           {
             this.ERROR_BUTTON_1
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
           if (text.Length > (int) byte.MaxValue)
             text = text.Substring(0, 250);
-          Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.InitOrLoadFailedCallback), (object) null);
         }
       }
 
@@ -1113,11 +1085,8 @@ namespace Mortar
           {
             this.ERROR_BUTTON_1
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
           if (text.Length > (int) byte.MaxValue)
             text = text.Substring(0, 250);
-          Guide.BeginShowMessageBox(this.ERROR_TITLE_1, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.InitOrLoadFailedCallback), (object) null);
         }
       }
 

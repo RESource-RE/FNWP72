@@ -5,7 +5,6 @@
 // Assembly location: C:\Users\Texture2D\Documents\WP\FNWP72.dll
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Input;
 using Mortar;
 using System;
@@ -105,13 +104,6 @@ namespace FruitNinja
       private static void SwitchToLanguageCallback(IAsyncResult result)
       {
         bool flag = false;
-        int? nullable = Guide.EndShowMessageBox(result);
-        if (nullable.HasValue)
-        {
-          Guide.EndShowMessageBox(result);
-          if (nullable.HasValue && nullable.Value == 1)
-            flag = true;
-        }
         if (!flag)
           return;
         TheGame.switchLanguage = true;
@@ -125,15 +117,6 @@ namespace FruitNinja
           TheGame.instance.stringTable.GetString(926),
           TheGame.instance.stringTable.GetString(931)
         };
-        try
-        {
-          if (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
-          Guide.BeginShowMessageBox(TheGame.instance.stringTable.GetString(1183), TheGame.instance.stringTable.GetString(1184), (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(AboutScreen.SwitchToLanguageCallback), (object) null);
-        }
-        catch
-        {
-        }
       }
 
       private void Callback_English()

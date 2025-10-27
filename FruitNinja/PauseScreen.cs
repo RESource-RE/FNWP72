@@ -5,7 +5,6 @@
 // Assembly location: C:\Users\Texture2D\Documents\WP\FNWP72.dll
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Input;
 using Mortar;
 using System;
@@ -98,9 +97,6 @@ namespace FruitNinja
       private void ExitGameCallback(IAsyncResult result)
       {
         bool flag = false;
-        int? nullable = Guide.EndShowMessageBox(result);
-        if (nullable.HasValue && nullable.HasValue && nullable.Value == 1)
-          flag = true;
         if (!flag)
           return;
         Game.game_work.saveData.ClearTotals();
@@ -120,11 +116,6 @@ namespace FruitNinja
           string title = TheGame.instance.stringTable.GetString(929);
           string text = TheGame.instance.stringTable.GetString(1009);
           string[] buttons = new string[2]{ str2, str1 };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
-          if (Guide.IsVisible)
-            return;
-          Guide.BeginShowMessageBox(title, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.ExitGameCallback), (object) null);
         }
         catch
         {

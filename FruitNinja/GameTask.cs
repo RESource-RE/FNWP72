@@ -6,7 +6,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.GamerServices;
 using Mortar;
 using System;
 using System.Collections.Generic;
@@ -136,13 +135,6 @@ namespace FruitNinja
       private static void AllowMusicCallback(IAsyncResult result)
       {
         bool flag = false;
-        int? nullable = Guide.EndShowMessageBox(result);
-        if (nullable.HasValue)
-        {
-          Guide.EndShowMessageBox(result);
-          if (nullable.HasValue && nullable.Value == 0)
-            flag = true;
-        }
         if (flag)
         {
           SoundManager.GetInstance().AllowMusic();
@@ -155,13 +147,6 @@ namespace FruitNinja
       private static void AllowMusicCallback2(IAsyncResult result)
       {
         bool flag = false;
-        int? nullable = Guide.EndShowMessageBox(result);
-        if (nullable.HasValue)
-        {
-          Guide.EndShowMessageBox(result);
-          if (nullable.HasValue && nullable.Value == 0)
-            flag = true;
-        }
         if (flag)
         {
           SoundManager.GetInstance().AllowMusic();
@@ -180,9 +165,6 @@ namespace FruitNinja
             TheGame.instance.stringTable.GetString(926),
             TheGame.instance.stringTable.GetString(931)
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
-          Guide.BeginShowMessageBox(TheGame.instance.stringTable.GetString(1188), TheGame.instance.stringTable.GetString(1189), (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(GameTask.AllowMusicCallback), (object) null);
         }
         else
         {
@@ -200,9 +182,6 @@ namespace FruitNinja
             TheGame.instance.stringTable.GetString(926),
             TheGame.instance.stringTable.GetString(931)
           };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
-          Guide.BeginShowMessageBox(TheGame.instance.stringTable.GetString(1188), TheGame.instance.stringTable.GetString(1189), (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(GameTask.AllowMusicCallback2), (object) null);
         }
         else
         {

@@ -5,7 +5,6 @@
 // Assembly location: C:\Users\Texture2D\Documents\WP\FNWP72.dll
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Mortar;
@@ -285,9 +284,6 @@ namespace FruitNinja
       private void ExitGameCallback(IAsyncResult result)
       {
         bool flag = false;
-        int? nullable = Guide.EndShowMessageBox(result);
-        if (nullable.HasValue && nullable.HasValue && nullable.Value == 1)
-          flag = true;
         if (!flag)
           return;
         if (Game.isWP7TrialMode())
@@ -399,14 +395,13 @@ namespace FruitNinja
             }
             break;
           case MainScreen.MS.MS_WAIT:
-            if (!Guide.IsVisible && TheGame.instance.BackButtonWasPressed)
+            if (TheGame.instance.BackButtonWasPressed)
             {
               string[] buttons = new string[2]
               {
                 this.NO,
                 this.YES
               };
-              Guide.BeginShowMessageBox(TheGame.instance.stringTable.GetString(929), TheGame.instance.stringTable.GetString(1009), (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(this.ExitGameCallback), (object) null);
               return;
             }
             if (this.m_dojoButton != null)

@@ -6,7 +6,6 @@
 
 using FNWP72.Engine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Mortar;
 using System;
 using System.Collections.Generic;
@@ -148,11 +147,11 @@ namespace FruitNinja
         }
         catch
         {
-          Game.s_trialModeState = true;
+          Game.s_trialModeState = false;
         }
       }
 
-      public static bool isWP7TrialMode() => Game.s_trialModeState;
+      public static bool isWP7TrialMode() => false;
 
       public static void ShowBuyMessageBox()
       {
@@ -163,11 +162,6 @@ namespace FruitNinja
           string title = TheGame.instance.stringTable.GetString(1144);
           string text = TheGame.instance.stringTable.GetString(1145);
           string[] buttons = new string[2]{ str2, str1 };
-          while (Guide.IsVisible)
-            Thread.Sleep(32 /*0x20*/);
-          if (Guide.IsVisible)
-            return;
-          Guide.BeginShowMessageBox(title, text, (IEnumerable<string>) buttons, 0, MessageBoxIcon.Alert, new AsyncCallback(Game.ExitGameCallback), (object) null);
         }
         catch
         {
